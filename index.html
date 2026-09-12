@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Campus Micro-Payments & Ordering Ecosystem</title>
+  <meta name="description" content="Next-generation university campus micro-payments and ordering platform with Apple Liquid Glass design, dynamic light/dark themes, cryptographic NFC/barcode ID payments, and domain-isolated access control." />
+
+  <!-- Apple Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700;800&family=Outfit:wght@500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- Chart.js for Analytics -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="public/css/variables.css" />
+  <link rel="stylesheet" href="public/css/base.css" />
+  <link rel="stylesheet" href="public/css/liquid-glass.css" />
+  <link rel="stylesheet" href="public/css/login.css" />
+  <link rel="stylesheet" href="public/css/student.css" />
+  <link rel="stylesheet" href="public/css/pos.css" />
+  <link rel="stylesheet" href="public/css/kitchen.css" />
+  <link rel="stylesheet" href="public/css/admin.css" />
+  <link rel="stylesheet" href="public/css/split.css" />
+  <link rel="stylesheet" href="public/css/presenter.css" />
+</head>
+<body>
+
+  <!-- Ambient Liquid Chromatic Background Lighting -->
+  <div class="liquid-canvas-bg" aria-hidden="true">
+    <div class="liquid-orb liquid-orb-1"></div>
+    <div class="liquid-orb liquid-orb-2"></div>
+    <div class="liquid-orb liquid-orb-3"></div>
+  </div>
+
+  <!-- GATEWAY: APPLE LIQUID GLASS LOGIN OVERLAY -->
+  <div id="login-gateway" class="login-gateway-overlay">
+    <div class="login-glass-card">
+      <!-- Theme Switcher & Presentation on Login Window -->
+      <div class="login-theme-pos" style="display: flex; align-items: center; gap: 6px;">
+        <button type="button" class="btn btn-outline" style="font-size: 0.72rem; padding: 4px 10px; border-radius: 999px;" onclick="window.PresenterEngine.openSlides()" title="Open Presentation Pitch Deck">📽️ Slides</button>
+        <button type="button" class="theme-toggle-btn" title="Toggle Light / Dark Liquid Glass">☀️</button>
+      </div>
+
+      <div class="login-header">
+        <div class="login-brand-icon">🎓</div>
+        <h1 class="login-title">CampusPay Gateway</h1>
+        <p class="login-subtitle">
+          Secure Micro-Payments & Ordering Ecosystem<br />
+          Log in with your authorized campus domain
+        </p>
+      </div>
+
+      <!-- Domain Rules Info Box -->
+      <div class="domain-rules-box">
+        <div class="domain-rules-title">Required Domain Identification</div>
+        <div class="domain-pills-row">
+          <span class="domain-rule-item domain-pill std">🎓 @std (Student)</span>
+          <span class="domain-rule-item domain-pill shop">🛒 @shop (Merchant)</span>
+          <span class="domain-rule-item domain-pill admin">📊 @admin (Admin)</span>
+        </div>
+      </div>
+
+      <!-- Login Form -->
+      <form id="login-form" class="login-form">
+        <div class="option-group">
+          <label class="input-label" for="login-email">Campus Domain Email</label>
+          <div class="input-wrapper">
+            <input
+              type="text"
+              id="login-email"
+              class="form-control"
+              placeholder="e.g. aarav.sharma@std or canteen@shop"
+              required
+              autocomplete="email"
+            />
+          </div>
+        </div>
+
+        <div class="option-group">
+          <label class="input-label" for="login-password">Password</label>
+          <input
+            type="password"
+            id="login-password"
+            class="form-control"
+            value="campus123"
+            placeholder="••••••••"
+            required
+          />
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 6px; padding: 12px;">
+          Authenticate & Access Portal →
+        </button>
+      </form>
+
+      <!-- 1-Click Quick Demo Accounts -->
+      <div style="margin-top: 24px; border-top: 1px solid var(--border-subtle); padding-top: 16px;">
+        <div style="font-size: 0.72rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; text-align: center; margin-bottom: 10px;">
+          ⚡ 1-Click Instant Demo Logins
+        </div>
+        <div class="demo-accounts-grid">
+          <button class="demo-login-btn" onclick="quickDemoLogin('aarav.sharma@std')">
+            <span class="demo-icon">🎓</span>
+            <span class="demo-role-name">Student</span>
+            <span class="demo-domain-tag domain-pill std">@std</span>
+          </button>
+          <button class="demo-login-btn" onclick="quickDemoLogin('canteen@shop')">
+            <span class="demo-icon">🛒</span>
+            <span class="demo-role-name">Merchant</span>
+            <span class="demo-domain-tag domain-pill shop">@shop</span>
+          </button>
+          <button class="demo-login-btn" onclick="quickDemoLogin('dean.sundaram@admin')">
+            <span class="demo-icon">📊</span>
+            <span class="demo-role-name">Admin</span>
+            <span class="demo-domain-tag domain-pill admin">@admin</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Top Application Bar (Liquid Glass) -->
+  <header class="app-header" style="display: none;">
+    <div class="brand-wrapper">
+      <div class="brand-icon">🎓</div>
+      <div class="brand-title">
+        <span>CampusPay & Hub</span>
+        <span class="brand-subtitle">Smart Micro-Payments Ecosystem</span>
+      </div>
+    </div>
+
+    <!-- Role Switcher Navigation (Guarded Strictly by Domain) -->
+    <nav class="role-nav" aria-label="Campus Ecosystem Modules">
+      <button class="role-tab active" data-target="student">
+        <span>🎓 Student & Parent</span>
+      </button>
+      <button class="role-tab" data-target="pos">
+        <span>🛒 Merchant POS</span>
+      </button>
+      <button class="role-tab" data-target="kitchen">
+        <span>🍳 Kitchen KDS</span>
+      </button>
+      <button class="role-tab" data-target="admin">
+        <span>📊 Admin & Ledger</span>
+      </button>
+      <button class="role-tab split-tab" data-target="split">
+        <span>⚡ Simulation Studio</span>
+      </button>
+    </nav>
+
+    <!-- Header Actions & User Profile -->
+    <div class="header-actions">
+      <!-- Presentation Slides Button -->
+      <button class="btn btn-outline" style="font-size: 0.72rem; padding: 5px 11px; border-radius: 999px;" onclick="window.PresenterEngine.openSlides()" title="Open Presentation Pitch Deck">
+        📽️ Slides
+      </button>
+
+      <!-- Apple Liquid Theme Switcher (☀️ / 🌙) -->
+      <button class="theme-toggle-btn" title="Toggle Light / Dark Liquid Glass">☀️</button>
+
+      <div class="ws-status-indicator" title="Central Server WebSocket Real-time Status">
+        <div class="ws-dot"></div>
+        <span id="ws-status-text">Live</span>
+      </div>
+
+      <!-- Authenticated User Profile Chip -->
+      <div class="user-profile-chip">
+        <img id="header-user-avatar" src="" alt="Avatar" class="user-avatar-small" />
+        <div style="display: flex; flex-direction: column;">
+          <span id="header-user-name" class="user-meta-name">User</span>
+          <span id="header-user-domain" class="domain-pill std">@std</span>
+        </div>
+        <button id="btn-header-logout" class="btn-logout" title="Log out from campus gateway">
+          Logout
+        </button>
+      </div>
+
+      <button id="btn-reset-data" class="btn-icon" title="Reset Campus Ledgers to Demo Default" aria-label="Reset System">
+        🔄
+      </button>
+    </div>
+  </header>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container"></div>
+
+  <!-- MODULE 1: STUDENT & PARENT VIEW (Protected: @std Domain) -->
+  <main id="view-student" class="module-view active">
+    <div class="student-grid">
+      <!-- Left Column: Smart ID Card, Wallet & Budget -->
+      <aside>
+        <!-- 3D Interactive Virtual Smart ID Card -->
+        <div class="id-card-perspective">
+          <div id="interactive-id-card" class="id-card-wrapper">
+            <!-- Front Face -->
+            <div class="id-card-face id-card-front">
+              <div class="card-pattern-overlay"></div>
+              <div class="card-header-bar">
+                <span class="card-univ-title">National Institute of Technology</span>
+                <div class="card-chip-nfc">
+                  <div class="smart-chip"></div>
+                  <span class="nfc-icon" title="NFC Contactless Antenna Embedded">📡</span>
+                </div>
+              </div>
+
+              <div class="card-body-info">
+                <img id="card-student-photo" src="" alt="Student Avatar" class="student-photo" />
+                <div class="student-meta">
+                  <div id="card-student-name" class="student-name-text">Student Name</div>
+                  <div id="card-student-roll" class="student-roll-text">2024CS1042</div>
+                  <div id="card-student-dept" class="student-dept-text">Computer Science</div>
+                </div>
+              </div>
+
+              <div class="card-footer-bar">
+                <div>UID: <span id="card-student-uid" class="card-uid-badge">NFC-8A7F-B21C</span></div>
+                <div id="card-status-badge" class="badge badge-emerald">ACTIVE</div>
+              </div>
+            </div>
+
+            <!-- Back Face (Dynamic Cryptographic Barcode / QR) -->
+            <div class="id-card-face id-card-back">
+              <div class="crypto-token-badge">
+                <span>🔐 Cryptographic Offline Token</span>
+              </div>
+              <div class="crypto-qr-container" id="card-crypto-qr">
+                <!-- Dynamic QR code rendered here -->
+              </div>
+              <div class="token-timer-wrapper">
+                <span>Rotating in:</span>
+                <span id="token-timer-sec" class="timer-circle">30s</span>
+              </div>
+              <div class="barcode-strip" id="card-barcode-text">8901234567890</div>
+              <div id="card-token-hash" style="font-size: 0.65rem; color: #64748b; font-family: var(--font-mono);">
+                HMAC: a8f9c1...
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card Actions -->
+        <div class="card-actions-bar">
+          <button id="btn-flip-card" class="btn btn-outline" style="flex: 1; font-size: 0.8rem;">
+            🔄 Flip to Dynamic Barcode
+          </button>
+          <button id="btn-student-test-tap" class="btn btn-primary" style="flex: 1; font-size: 0.8rem;" title="Simulates tapping this card on Merchant POS">
+            📱 Test Tap on POS
+          </button>
+        </div>
+
+        <!-- Digital Campus Wallet -->
+        <div class="wallet-card">
+          <div class="panel-header" style="margin-bottom: 0;">
+            <span class="panel-title" style="font-size: 0.95rem;">
+              <span>💳 Campus Wallet</span>
+            </span>
+            <span class="badge badge-emerald">ONLINE TOP-UP ONLY</span>
+          </div>
+
+          <div class="wallet-balance-row">
+            <div>
+              <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase;">Available Balance</div>
+              <div class="wallet-amount">
+                <span class="wallet-currency">₹</span><span id="student-wallet-bal">0.00</span>
+              </div>
+            </div>
+            <button class="btn btn-success" onclick="StudentApp.openUpiModal()">
+              + Top up (UPI)
+            </button>
+          </div>
+
+          <!-- Daily Spending Limit (Parental Budget Control) -->
+          <div class="daily-budget-bar-wrapper">
+            <div class="budget-labels">
+              <span>Today's Spend: <strong id="budget-today-spent">₹0.00</strong></span>
+              <span>Daily Cap: <strong id="budget-daily-limit">₹300.00</strong></span>
+            </div>
+            <div class="progress-track">
+              <div id="budget-progress-fill" class="progress-fill" style="width: 15%;"></div>
+            </div>
+          </div>
+
+          <div style="background: rgba(255,255,255,0.03); border: var(--glass-border-subtle); border-radius: var(--radius-md); padding: 12px; margin-top: 14px;">
+            <div style="font-size: 0.75rem; font-weight: 700; margin-bottom: 6px; color: var(--text-secondary);">
+              Parental Budget Control: Daily Spend Cap
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <input type="range" id="daily-limit-input" min="100" max="1000" step="50" value="300" style="flex: 1; accent-color: var(--accent-cyan);" />
+              <span id="daily-limit-display-val" style="font-family: var(--font-mono); font-weight: 700; min-width: 50px;">₹300</span>
+              <button id="btn-save-daily-limit" class="btn btn-outline" style="font-size: 0.75rem; padding: 4px 8px;">Save</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Spending Category Analytics -->
+        <div class="glass-panel" style="margin-bottom: 20px;">
+          <div class="panel-header">
+            <span class="panel-title" style="font-size: 0.95rem;">📊 Monthly Spend Breakdown</span>
+          </div>
+          <div style="height: 160px; position: relative;">
+            <canvas id="student-spend-chart"></canvas>
+          </div>
+        </div>
+
+        <!-- Live Active Orders Section -->
+        <div class="active-orders-section">
+          <div class="panel-header">
+            <span class="panel-title" style="font-size: 0.95rem;">📦 Active Pre-Orders</span>
+            <button class="btn-icon" onclick="StudentApp.loadOrders()" title="Refresh Orders" style="width:28px; height:28px;">🔄</button>
+          </div>
+          <div id="active-orders-container">
+            <!-- Active order cards render here -->
+          </div>
+        </div>
+      </aside>
+
+      <!-- Right Column: Swiggy/Zepto Style Canteen & Printout Ordering -->
+      <section class="preorder-section">
+        <!-- Vendor Tabs -->
+        <div>
+          <div class="panel-header" style="margin-bottom: 12px;">
+            <span class="panel-title">
+              <span>🛍️ Campus Quick Pre-Orders (Skip the Queue)</span>
+            </span>
+            <span class="badge badge-orange">Swiggy / Zepto Style</span>
+          </div>
+          <div id="vendor-tabs-list" class="vendor-tabs">
+            <!-- Vendor buttons dynamically inserted -->
+          </div>
+        </div>
+
+        <!-- Vendor Header Banner -->
+        <div class="glass-panel" style="padding: 0; overflow: hidden; position: relative;">
+          <img id="vendor-banner-img" src="" alt="Vendor Banner" style="width: 100%; height: 130px; object-fit: cover; opacity: 0.5;" />
+          <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(17,24,39,0.95), transparent); padding: 16px 20px; display: flex; flex-direction: column; justify-content: flex-end;">
+            <h3 id="vendor-banner-title" style="font-family: var(--font-heading); font-size: 1.3rem; font-weight: 800; color: #ffffff;">Vendor Name</h3>
+            <p id="vendor-banner-tagline" style="font-size: 0.8rem; color: #cbd5e1; margin-top: 2px;">Tagline</p>
+            <div id="vendor-banner-location" style="font-size: 0.75rem; color: var(--accent-cyan); margin-top: 4px;">Location</div>
+          </div>
+        </div>
+
+        <!-- Filter & Search Bar -->
+        <div class="catalog-filter-bar">
+          <input type="text" id="menu-search-input" class="form-control" placeholder="🔍 Search dishes, beverages, stationery..." style="min-width: 260px;" />
+          <label class="veg-toggle-wrapper">
+            <input type="checkbox" id="veg-only-toggle" style="accent-color: #10b981;" />
+            <span>Pure Veg Only</span>
+          </label>
+        </div>
+
+        <!-- Food Catalog Grid -->
+        <div id="food-menu-container" class="food-items-grid">
+          <!-- Food cards dynamically inserted -->
+        </div>
+
+        <!-- Stationery Printout Studio -->
+        <div id="print-studio-container" class="print-studio-card" style="display: none;">
+          <div class="panel-header">
+            <span class="panel-title">
+              <span>🖨️ Campus Printout & Thesis Binding Studio</span>
+            </span>
+            <span class="badge badge-cyan">Advance Laser Queue</span>
+          </div>
+
+          <!-- File Upload Simulation -->
+          <div class="file-dropzone" onclick="document.getElementById('sim-file-input').click()">
+            <input type="file" id="sim-file-input" style="display: none;" onchange="alert('Uploaded: ' + (this.files[0] ? this.files[0].name : 'doc.pdf'))" />
+            <div style="font-size: 2.2rem; margin-bottom: 8px;">📑</div>
+            <div style="font-family: var(--font-heading); font-weight: 700; color: #ffffff;">Click to Upload PDF / DOCX Document</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">Supports Assignments, Lab Manuals, Project Reports, and Thesis</div>
+          </div>
+
+          <div class="print-options-grid">
+            <div class="option-group">
+              <label class="option-label" for="print-pages-input">Number of Pages</label>
+              <input type="number" id="print-pages-input" class="form-control" min="1" max="500" value="15" />
+            </div>
+
+            <div class="option-group">
+              <label class="option-label" for="print-copies-input">Number of Copies</label>
+              <input type="number" id="print-copies-input" class="form-control" min="1" max="20" value="1" />
+            </div>
+
+            <div class="option-group">
+              <label class="option-label" for="print-color-select">Color Mode</label>
+              <select id="print-color-select" class="form-control">
+                <option value="BW">Black & White (₹2.00 / page)</option>
+                <option value="COLOR">Full Color Laser (₹10.00 / page)</option>
+              </select>
+            </div>
+
+            <div class="option-group">
+              <label class="option-label" for="print-binding-select">Binding Option</label>
+              <select id="print-binding-select" class="form-control">
+                <option value="NONE">No Binding (Stapled)</option>
+                <option value="SPIRAL">Heavy Duty Spiral (+₹35.00)</option>
+                <option value="HARDCOVER">Hardcover Golden Embossed (+₹150.00)</option>
+              </select>
+            </div>
+
+            <div class="option-group" style="justify-content: flex-end;">
+              <label class="veg-toggle-wrapper" style="margin-bottom: 8px;">
+                <input type="checkbox" id="print-duplex-checkbox" />
+                <span>Double-Sided Print (₹1.50/pg)</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Live Price Breakdown -->
+          <div style="background: rgba(14, 165, 233, 0.05); border: 1px solid rgba(14, 165, 233, 0.2); border-radius: var(--radius-md); padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+            <div>
+              <div style="font-size: 0.75rem; color: var(--text-secondary);">Estimated Total Cost:</div>
+              <div id="print-calc-total" style="font-family: var(--font-heading); font-size: 1.5rem; font-weight: 800; color: #ffffff;">₹65.00</div>
+              <div id="print-calc-breakdown" style="font-size: 0.72rem; color: var(--accent-cyan); margin-top: 2px;">
+                15 pages (B&W) + Spiral Binding: ₹35.00 • Prep: 4 mins
+              </div>
+            </div>
+            <button class="btn btn-primary" onclick="StudentApp.addPrintJobToCart()">
+              + Add Print Job to Cart
+            </button>
+          </div>
+        </div>
+
+        <!-- Sticky Floating Cart Bar -->
+        <div id="floating-cart-bar" class="cart-floating-bar">
+          <div style="display: flex; align-items: center; gap: 14px;">
+            <div style="font-size: 1.4rem;">🛍️</div>
+            <div>
+              <div id="cart-floating-count" style="font-family: var(--font-heading); font-size: 0.9rem; font-weight: 700; color: #ffffff;">1 ITEM</div>
+              <div id="cart-floating-total" style="font-family: var(--font-mono); font-size: 1.05rem; font-weight: 800; color: var(--accent-orange);">₹0.00</div>
+            </div>
+          </div>
+          <button class="btn btn-primary" onclick="StudentApp.openCheckoutModal()" style="background: linear-gradient(135deg, #f97316, #ea580c); box-shadow: 0 4px 14px rgba(249, 115, 22, 0.4);">
+            View Cart & Checkout →
+          </button>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- MODULE 2: MERCHANT POS TERMINAL (Protected: @shop Domain) -->
+  <section id="view-pos" class="module-view" style="display: none;">
+    <!-- POS Top Counter Bar -->
+    <div class="pos-counter-bar">
+      <div>
+        <h2 style="font-family: var(--font-heading); font-size: 1.25rem; font-weight: 800; color: var(--text-primary);">
+          🛒 Merchant Counter POS Terminal
+        </h2>
+        <div class="terminal-badge">
+          <span>Terminal ID: <strong>POS-TERM-CANTEEN-01</strong></span>
+          <span>•</span>
+          <span id="pos-network-status-text" style="color: var(--accent-emerald);">🟢 Online (Central Ledger Connected)</span>
+        </div>
+      </div>
+
+      <div class="offline-toggle-container">
+        <label class="offline-switch">
+          <input type="checkbox" id="pos-offline-toggle" />
+          <span>Simulate POS Offline Mode (Wi-Fi Lost)</span>
+        </label>
+        <span id="pos-offline-queue-badge" class="badge badge-amber" style="display: none;">0 queued</span>
+        <button id="btn-sync-offline-queue" class="btn btn-outline" style="display: none; font-size: 0.75rem; padding: 4px 10px;">
+          🔄 Sync to Cloud
+        </button>
+      </div>
+    </div>
+
+    <div class="pos-grid">
+      <!-- Left Column: Quick Touch Menu & Custom Amount Keypad -->
+      <div>
+        <div class="glass-panel" style="margin-bottom: 20px;">
+          <div class="panel-header">
+            <span class="panel-title">
+              <span>🍔 Quick Cashier Menu</span>
+            </span>
+            <span style="font-size: 0.75rem; color: var(--text-muted);">Tap item to add to running counter bill</span>
+          </div>
+          <div id="pos-quick-items-grid" class="pos-menu-grid">
+            <!-- Quick items rendered here -->
+          </div>
+        </div>
+
+        <!-- Custom Keypad -->
+        <div class="pos-keypad-panel">
+          <div class="panel-header">
+            <span class="panel-title">🔢 Custom Counter Billing Keypad</span>
+            <div id="keypad-display" style="font-family: var(--font-heading); font-size: 1.4rem; font-weight: 800; color: var(--accent-cyan);">₹0.00</div>
+          </div>
+          <div class="keypad-grid">
+            <button class="key-btn" onclick="posKeyInput('1')">1</button>
+            <button class="key-btn" onclick="posKeyInput('2')">2</button>
+            <button class="key-btn" onclick="posKeyInput('3')">3</button>
+            <button class="key-btn" onclick="posKeyInput('4')">4</button>
+            <button class="key-btn" onclick="posKeyInput('5')">5</button>
+            <button class="key-btn" onclick="posKeyInput('6')">6</button>
+            <button class="key-btn" onclick="posKeyInput('7')">7</button>
+            <button class="key-btn" onclick="posKeyInput('8')">8</button>
+            <button class="key-btn" onclick="posKeyInput('9')">9</button>
+            <button class="key-btn action-clear" onclick="posKeyInput('C')">C</button>
+            <button class="key-btn" onclick="posKeyInput('0')">0</button>
+            <button class="key-btn" onclick="posKeyInput('.')">.</button>
+            <button class="key-btn action-enter" onclick="posKeyInput('ENTER')">Enter Custom Amount →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Current Bill & NFC Touch Reader -->
+      <aside>
+        <div class="bill-ticket-panel" style="margin-bottom: 20px;">
+          <div class="panel-header">
+            <span class="panel-title">🧾 Current Bill</span>
+            <button class="btn btn-outline" style="font-size: 0.75rem; padding: 4px 8px;" onclick="MerchantPOS.clearBill()">Clear Bill</button>
+          </div>
+
+          <div id="pos-bill-items" class="bill-items-list">
+            <!-- Bill items inserted here -->
+          </div>
+
+          <div class="bill-totals-box">
+            <div class="bill-total-row">
+              <span>Subtotal:</span>
+              <span id="pos-bill-subtotal" style="font-family: var(--font-mono);">₹0.00</span>
+            </div>
+            <div class="bill-total-row">
+              <span>Campus Tax (GST Exempt):</span>
+              <span style="font-family: var(--font-mono);">₹0.00</span>
+            </div>
+            <div class="bill-total-row grand">
+              <span>Grand Total:</span>
+              <span id="pos-bill-grand-total" style="color: var(--accent-emerald);">₹0.00</span>
+            </div>
+          </div>
+
+          <!-- ZERO-DEVICE-DATA NFC READER TOUCH PAD -->
+          <div id="pos-nfc-pad" class="nfc-touch-pad" title="Tap Student Virtual/Physical ID Card Here">
+            <div class="nfc-pulse-ring">
+              <span>📡</span>
+            </div>
+            <div class="nfc-instruction-title">TAP STUDENT ID CARD HERE</div>
+            <div class="nfc-instruction-subtitle">
+              Instant Micro-Payment Deduction • ZERO Student Data Needed
+            </div>
+          </div>
+
+          <!-- Manual Barcode Scanner Input -->
+          <div style="margin-top: 16px;">
+            <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 6px;">Or Scan Barcode / USB Scanner / Paste Signed Token:</div>
+            <input type="text" id="pos-scanner-input" class="form-control" placeholder="Scan Barcode / Roll No / Cryptographic Token (Press Enter)" style="width: 100%; font-family: var(--font-mono); font-size: 0.8rem;" />
+          </div>
+
+          <!-- Quick Test Taps Shortcuts -->
+          <div class="quick-test-taps">
+            <div style="font-size: 0.72rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase;">Simulate Student Physical Card Tap:</div>
+            <button class="test-tap-btn" onclick="MerchantPOS.triggerCardTap('NFC-8A7F-B21C', {name:'Aarav Sharma'})">
+              <span>🎓 Aarav Sharma (CS)</span>
+              <span class="mono-cell">NFC-8A7F-B21C (₹650 bal)</span>
+            </button>
+            <button class="test-tap-btn" onclick="MerchantPOS.triggerCardTap('NFC-3C99-F41A', {name:'Ananya Patel'})">
+              <span>🎓 Ananya Patel (ECE)</span>
+              <span class="mono-cell">NFC-3C99-F41A (₹1240 bal)</span>
+            </button>
+            <button class="test-tap-btn" onclick="MerchantPOS.triggerCardTap('NFC-7D1E-669B', {name:'Rahul Verma'})">
+              <span>🎓 Rahul Verma (Mech)</span>
+              <span class="mono-cell" style="color: var(--accent-rose);">Low Bal: ₹32.50 (Test Rejection)</span>
+            </button>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- MODULE 3: VENDOR KITCHEN DISPLAY SYSTEM (Protected: @shop Domain) -->
+  <section id="view-kitchen" class="module-view" style="display: none;">
+    <div class="kds-header-bar">
+      <div class="kds-title-group">
+        <div style="font-size: 1.8rem;">🍳</div>
+        <div>
+          <h2 style="font-family: var(--font-heading); font-size: 1.3rem; font-weight: 800; color: var(--text-primary);">
+            Vendor Kitchen Display System (KDS)
+          </h2>
+          <div style="font-size: 0.78rem; color: var(--text-secondary);">Real-time Order Queue with Live Timers & Chimes</div>
+        </div>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 14px;">
+        <select id="kds-vendor-filter" class="form-control" style="font-weight: 600;">
+          <option value="ALL">All Campus Counters</option>
+          <option value="ven_canteen">Central Campus Cafeteria</option>
+          <option value="ven_greenleaf">Green Leaf Juice & Healthy Cafe</option>
+          <option value="ven_printshop">Campus Print & Stationery Hub</option>
+        </select>
+
+        <button id="btn-test-kitchen-bell" class="btn btn-outline" style="font-size: 0.8rem;">
+          🔔 Test Bell
+        </button>
+
+        <div class="kds-live-clock" id="kds-clock">12:30:45 PM</div>
+      </div>
+    </div>
+
+    <!-- Kanban Board -->
+    <div class="kds-kanban-board">
+      <!-- Column 1: Incoming -->
+      <div class="kds-column">
+        <div class="kds-col-header">
+          <span class="kds-col-title">
+            <span style="color: var(--accent-cyan);">📥</span> New Orders (Queued)
+          </span>
+          <span id="kds-count-placed" class="kds-col-count">0</span>
+        </div>
+        <div id="kds-col-placed" class="kds-tickets-container"></div>
+      </div>
+
+      <!-- Column 2: In Preparation -->
+      <div class="kds-column">
+        <div class="kds-col-header">
+          <span class="kds-col-title">
+            <span style="color: var(--accent-amber);">🍳</span> In Preparation
+          </span>
+          <span id="kds-count-prep" class="kds-col-count">0</span>
+        </div>
+        <div id="kds-col-prep" class="kds-tickets-container"></div>
+      </div>
+
+      <!-- Column 3: Ready for Pickup -->
+      <div class="kds-column">
+        <div class="kds-col-header">
+          <span class="kds-col-title">
+            <span style="color: var(--accent-emerald);">🔔</span> Ready for Pickup
+          </span>
+          <span id="kds-count-ready" class="kds-col-count">0</span>
+        </div>
+        <div id="kds-col-ready" class="kds-tickets-container"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MODULE 4: ADMIN & MANAGEMENT DASHBOARD (Protected: @admin Domain) -->
+  <section id="view-admin" class="module-view" style="display: none;">
+    <div class="panel-header" style="margin-bottom: 20px;">
+      <div>
+        <h2 style="font-family: var(--font-heading); font-size: 1.4rem; font-weight: 800; color: var(--text-primary);">
+          📊 Campus Management & Financial Ledger
+        </h2>
+        <div style="font-size: 0.8rem; color: var(--text-secondary);">Real-time Campus Monetary Flow, Cryptographic Audit Logs, and Card Security</div>
+      </div>
+      <button id="btn-export-csv" class="btn btn-outline">
+        📥 Export Full Ledger (CSV)
+      </button>
+    </div>
+
+    <!-- KPI Metric Cards -->
+    <div class="admin-kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-header">
+          <span class="kpi-title">Total Campus GMV</span>
+          <div class="kpi-icon" style="background: rgba(14, 165, 233, 0.15); color: var(--accent-cyan);">💰</div>
+        </div>
+        <div id="kpi-campus-gmv" class="kpi-val">₹0.00</div>
+        <div class="kpi-meta">All Micro-payments & Pre-orders</div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-header">
+          <span class="kpi-title">Offline ID Micro-Payments</span>
+          <div class="kpi-icon" style="background: rgba(16, 185, 129, 0.15); color: var(--accent-emerald);">📡</div>
+        </div>
+        <div id="kpi-offline-micropay" class="kpi-val">₹0.00</div>
+        <div id="kpi-offline-count" class="kpi-meta">0 offline taps</div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-header">
+          <span class="kpi-title">Online Pre-Orders</span>
+          <div class="kpi-icon" style="background: rgba(249, 115, 22, 0.15); color: var(--accent-orange);">📱</div>
+        </div>
+        <div id="kpi-preorders-vol" class="kpi-val">₹0.00</div>
+        <div id="kpi-preorders-count" class="kpi-meta">0 advance orders</div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-header">
+          <span class="kpi-title">UPI Wallet Recharges</span>
+          <div class="kpi-icon" style="background: rgba(139, 92, 246, 0.15); color: var(--accent-purple);">💳</div>
+        </div>
+        <div id="kpi-upi-recharge" class="kpi-val">₹0.00</div>
+        <div class="kpi-meta">Online Payment Gateway Top-ups</div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-header">
+          <span class="kpi-title">Campus Smart Cards</span>
+          <div class="kpi-icon" style="background: rgba(245, 158, 11, 0.15); color: var(--accent-amber);">🪪</div>
+        </div>
+        <div id="kpi-active-cards" class="kpi-val">3 Active</div>
+        <div class="kpi-meta">0 Security Lockouts</div>
+      </div>
+    </div>
+
+    <!-- Analytics Charts -->
+    <div class="admin-charts-grid">
+      <div class="chart-card">
+        <div class="panel-header">
+          <span class="panel-title">📈 Vendor Revenue Breakdown</span>
+        </div>
+        <div class="chart-wrapper">
+          <canvas id="chart-vendor-revenue"></canvas>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="panel-header">
+          <span class="panel-title">⚖️ Payment Channel Distribution</span>
+        </div>
+        <div class="chart-wrapper">
+          <canvas id="chart-payment-split"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Student Cards & Policy Directory -->
+    <div class="admin-table-panel">
+      <div class="panel-header">
+        <span class="panel-title">🪪 Student Smart Card Directory & Policy Controls</span>
+        <span style="font-size: 0.75rem; color: var(--text-muted);">Freeze lost cards or grant institutional welfare subsidies</span>
+      </div>
+      <div class="responsive-table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Student</th>
+              <th>Department</th>
+              <th>Card UID</th>
+              <th>Wallet Balance</th>
+              <th>Status</th>
+              <th>Admin Action</th>
+            </tr>
+          </thead>
+          <tbody id="admin-students-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Comprehensive Transaction Ledger -->
+    <div class="admin-table-panel">
+      <div class="table-filter-bar">
+        <div class="panel-title">📜 Real-time Campus Transaction Ledger</div>
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <select id="admin-txn-filter-type" class="form-control" style="font-size: 0.8rem;">
+            <option value="">All Transaction Types</option>
+            <option value="OFFLINE_MICROPAYMENT">Offline ID Micro-Payment</option>
+            <option value="ONLINE_PREORDER">Online Pre-Order</option>
+            <option value="ONLINE_UPI_RECHARGE">UPI Recharge</option>
+            <option value="CAMPUS_SUBSIDY_GRANT">Welfare Subsidy</option>
+          </select>
+          <input type="text" id="admin-txn-search" class="table-search-input" placeholder="🔍 Search student, roll, auth code..." />
+        </div>
+      </div>
+
+      <div class="responsive-table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Time</th>
+              <th>Student</th>
+              <th>Vendor / Gateway</th>
+              <th>Channel</th>
+              <th>Amount</th>
+              <th>Auth Cryptogram</th>
+              <th>Ledger Status</th>
+            </tr>
+          </thead>
+          <tbody id="admin-transactions-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Tamper-Proof Audit Logs -->
+    <div class="admin-table-panel">
+      <div class="panel-header">
+        <span class="panel-title">🛡️ System Event & Security Audit Trail</span>
+      </div>
+      <div class="responsive-table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Timestamp</th>
+              <th>Event Action</th>
+              <th>Actor</th>
+              <th>Audit Log Details</th>
+              <th>IP / Terminal ID</th>
+            </tr>
+          </thead>
+          <tbody id="admin-audit-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- MODULE 5: SIMULATION STUDIO (Protected: @admin Domain) -->
+  <section id="view-split" class="module-view" style="display: none;">
+    <div class="split-studio-header">
+      <div class="split-studio-info">
+        <h2>⚡ Ecosystem Simulation Studio</h2>
+        <p>Watch student actions on the left trigger instant micro-payment authorizations and kitchen orders on the right in real time!</p>
+      </div>
+
+      <!-- Quick 1-Click Simulation Buttons -->
+      <div class="split-triggers-bar">
+        <button id="sim-btn-tap" class="btn btn-primary" style="font-size: 0.8rem;">
+          📱 1-Click: Tap Aarav's Card on POS (₹50)
+        </button>
+        <button id="sim-btn-preorder" class="btn btn-success" style="font-size: 0.8rem;">
+          🍱 1-Click: Pre-Order Thali from App
+        </button>
+        <button id="sim-btn-ready" class="btn btn-outline" style="font-size: 0.8rem;">
+          🔔 1-Click: Mark Order Ready in Kitchen
+        </button>
+        <button id="sim-btn-freeze" class="btn btn-danger" style="font-size: 0.8rem;">
+          🔒 1-Click: Freeze Card & Test Rejection
+        </button>
+      </div>
+    </div>
+
+    <div class="split-container">
+      <!-- Left Split Pane: Student Mobile Simulator -->
+      <div class="split-pane">
+        <div class="split-pane-header">
+          <span class="split-pane-title">
+            <span>📱 Student Personal Device (Online Zone)</span>
+          </span>
+          <span class="badge badge-cyan">Zero Data Needed for Checkout</span>
+        </div>
+        <div class="split-pane-body">
+          <div style="background: var(--bg-secondary); border-radius: 20px; padding: 16px; border: 2px solid rgba(255,255,255,0.1);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 0.75rem; color: var(--text-muted);">
+              <span>9:41 AM • 5G</span>
+              <span>🔋 92%</span>
+            </div>
+
+            <div style="text-align: center; margin-bottom: 14px;">
+              <h3 style="font-family: var(--font-heading); font-size: 1.1rem; color: #ffffff;">Campus Mobile Portal</h3>
+              <p style="font-size: 0.75rem; color: var(--text-secondary);">Student: Aarav Sharma (2024CS1042)</p>
+            </div>
+
+            <!-- Virtual ID Card in Simulator -->
+            <div style="background: linear-gradient(135deg, #0f172a, #0369a1); border-radius: 14px; padding: 14px; color: white; margin-bottom: 14px; position: relative;">
+              <div style="display: flex; justify-content: space-between; font-size: 0.7rem; letter-spacing: 0.05em; text-transform: uppercase;">
+                <span>National Institute of Technology</span>
+                <span>📡 Contactless NFC</span>
+              </div>
+              <div style="margin: 12px 0;">
+                <div style="font-family: var(--font-heading); font-size: 1.05rem; font-weight: 700;">Aarav Sharma</div>
+                <div style="font-family: var(--font-mono); font-size: 0.75rem; color: #38bdf8;">2024CS1042 • CSE</div>
+              </div>
+              <div style="display: flex; justify-content: space-between; font-size: 0.7rem;">
+                <span class="mono-cell" style="color: #cbd5e1;">NFC-8A7F-B21C</span>
+                <span class="badge badge-emerald">ACTIVE</span>
+              </div>
+            </div>
+
+            <!-- Simulator Wallet Card -->
+            <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 12px; padding: 14px; margin-bottom: 14px;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <div style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase;">Campus Balance</div>
+                  <div style="font-family: var(--font-heading); font-size: 1.6rem; font-weight: 800; color: #ffffff;">
+                    ₹<span id="split-student-bal">650.00</span>
+                  </div>
+                </div>
+                <button class="btn btn-success" style="font-size: 0.75rem; padding: 6px 12px;" onclick="StudentApp.openUpiModal()">
+                  + Top Up
+                </button>
+              </div>
+            </div>
+
+            <button class="btn btn-primary" style="width: 100%; margin-bottom: 8px;" onclick="SimulationStudio.simTapPayment()">
+              Tap ID Card on Vendor POS Counter →
+            </button>
+            <button class="btn btn-outline" style="width: 100%;" onclick="SimulationStudio.simPreOrder()">
+              Order Deluxe Thali (₹90) →
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Split Pane: Merchant POS or Kitchen Display -->
+      <div class="split-pane">
+        <div class="split-pane-header">
+          <span class="split-pane-title">
+            <span>🏪 Campus Merchant Counter & Kitchen</span>
+          </span>
+          <div class="right-pane-tabs">
+            <button class="right-tab-btn active" data-target="pos">Merchant POS</button>
+            <button class="right-tab-btn" data-target="kitchen">Kitchen KDS</button>
+          </div>
+        </div>
+
+        <div class="split-pane-body">
+          <!-- POS View in Split Mode -->
+          <div id="split-right-pos">
+            <div style="background: rgba(14, 165, 233, 0.05); border: 1px solid rgba(14, 165, 233, 0.2); border-radius: 12px; padding: 16px; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <div style="font-family: var(--font-heading); font-weight: 700;">Cafeteria POS Counter #1</div>
+                <div style="font-size: 0.75rem; color: var(--text-secondary);">Terminal Connected to Campus Local Wi-Fi</div>
+              </div>
+              <div style="text-align: right;">
+                <div style="font-size: 0.7rem; color: var(--text-muted);">Current Bill Total</div>
+                <div style="font-family: var(--font-heading); font-size: 1.5rem; font-weight: 800; color: var(--accent-emerald);">₹50.00</div>
+              </div>
+            </div>
+
+            <div style="border: 2px dashed var(--accent-cyan); border-radius: 14px; padding: 24px; text-align: center; cursor: pointer;" onclick="SimulationStudio.simTapPayment()">
+              <div style="font-size: 2.2rem; margin-bottom: 6px;">📡</div>
+              <div style="font-family: var(--font-heading); font-size: 1.05rem; font-weight: 700; color: #ffffff;">TAP TO AUTHORIZE PAYMENT</div>
+              <div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 4px;">Click here to simulate student tapping contactless smart card</div>
+            </div>
+          </div>
+
+          <!-- Kitchen View in Split Mode -->
+          <div id="split-right-kitchen" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <span style="font-family: var(--font-heading); font-weight: 700; color: #ffffff;">Incoming Pre-Order Kitchen Tickets</span>
+              <button class="btn btn-outline" style="font-size: 0.75rem; padding: 4px 8px;" onclick="KitchenDisplay.loadOrders()">🔄 Refresh</button>
+            </div>
+            <div id="split-kds-tickets" style="display: flex; flex-direction: column; gap: 12px;">
+              <p style="font-size: 0.8rem; color: var(--text-muted); text-align: center; padding: 30px;">
+                Pre-orders placed by any student will arrive here with an acoustic chime.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MODAL 1: ONLINE UPI WALLET RECHARGE -->
+  <div id="upi-recharge-modal" class="modal-backdrop">
+    <div class="modal-card">
+      <button class="modal-close">×</button>
+      <div class="panel-header" style="margin-bottom: 12px;">
+        <span class="panel-title">
+          <span>💳 Top Up Digital Campus Wallet via UPI</span>
+        </span>
+      </div>
+      <p style="font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 16px;">
+        Strictly requires internet access on student personal device. Micro-payments at merchant counters require zero internet.
+      </p>
+
+      <!-- Amount Presets -->
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 14px;">
+        <button class="btn btn-outline" onclick="StudentApp.updateUpiAmount(100)">+ ₹100</button>
+        <button class="btn btn-outline" onclick="StudentApp.updateUpiAmount(250)">+ ₹250</button>
+        <button class="btn btn-outline" onclick="StudentApp.updateUpiAmount(500)">+ ₹500</button>
+        <button class="btn btn-outline" onclick="StudentApp.updateUpiAmount(1000)">+ ₹1000</button>
+      </div>
+
+      <div class="option-group" style="margin-bottom: 16px;">
+        <label class="option-label" for="upi-amount-input">Custom Top-up Amount (INR ₹)</label>
+        <input type="number" id="upi-amount-input" class="form-control" value="500" min="10" max="5000" oninput="StudentApp.generateUpiQr(this.value)" />
+      </div>
+
+      <!-- Dynamic QR Code -->
+      <div style="text-align: center; background: rgba(255,255,255,0.03); border: var(--glass-border-subtle); border-radius: var(--radius-md); padding: 16px; margin-bottom: 16px;">
+        <div id="upi-dynamic-qr" style="width: 160px; height: 160px; margin: 0 auto; background: white; border-radius: 8px; padding: 6px; display: flex; align-items: center; justify-content: center;">
+          <!-- SVG QR Code rendered here -->
+        </div>
+        <div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 8px;">Scan with GPay, PhonePe, Paytm, BHIM, or Any UPI App</div>
+        <div id="upi-ref-text" style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent-cyan); margin-top: 4px;">
+          Ref: UPI-TXN-REF-90218491
+        </div>
+      </div>
+
+      <!-- App Selection -->
+      <div style="font-size: 0.78rem; font-weight: 700; color: var(--text-secondary); margin-bottom: 8px;">Select Mock UPI App:</div>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 18px;">
+        <label style="background: rgba(255,255,255,0.04); border: var(--glass-border-subtle); border-radius: 8px; padding: 8px; font-size: 0.75rem; display: flex; align-items: center; gap: 6px; cursor: pointer;">
+          <input type="radio" name="upi-app-radio" value="Google Pay" checked />
+          <span>Google Pay</span>
+        </label>
+        <label style="background: rgba(255,255,255,0.04); border: var(--glass-border-subtle); border-radius: 8px; padding: 8px; font-size: 0.75rem; display: flex; align-items: center; gap: 6px; cursor: pointer;">
+          <input type="radio" name="upi-app-radio" value="PhonePe" />
+          <span>PhonePe</span>
+        </label>
+        <label style="background: rgba(255,255,255,0.04); border: var(--glass-border-subtle); border-radius: 8px; padding: 8px; font-size: 0.75rem; display: flex; align-items: center; gap: 6px; cursor: pointer;">
+          <input type="radio" name="upi-app-radio" value="Paytm" />
+          <span>Paytm UPI</span>
+        </label>
+      </div>
+
+      <!-- Simulation Actions -->
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <button class="btn btn-success" style="width: 100%;" onclick="StudentApp.executeUpiPayment('SUCCESS')">
+          ✅ Simulate Successful UPI Payment & Credit Wallet
+        </button>
+        <div style="display: flex; gap: 8px;">
+          <button class="btn btn-outline" style="flex: 1; font-size: 0.75rem; color: var(--accent-rose);" onclick="StudentApp.executeUpiPayment('DECLINED')">
+            ⚠️ Simulate Bank Decline
+          </button>
+          <button class="btn btn-outline" style="flex: 1; font-size: 0.75rem; color: var(--accent-amber);" onclick="StudentApp.executeUpiPayment('TIMEOUT')">
+            ⏱️ Simulate Timeout
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 2: PRE-ORDER CHECKOUT MODAL -->
+  <div id="checkout-modal" class="modal-backdrop">
+    <div class="modal-card">
+      <button class="modal-close">×</button>
+      <div class="panel-header" style="margin-bottom: 12px;">
+        <span class="panel-title">
+          <span>🛍️ Review & Confirm Advance Order</span>
+        </span>
+      </div>
+
+      <div id="checkout-items-list" class="bill-items-list" style="max-height: 180px;"></div>
+
+      <div class="option-group" style="margin: 14px 0;">
+        <label class="option-label" for="checkout-slot-select">Select Pickup Time Slot</label>
+        <select id="checkout-slot-select" class="form-control">
+          <option value="Immediate (ASAP - Kitchen Prep)">Immediate (ASAP - Normal Prep Time)</option>
+          <option value="Pickup in 15 mins">Pickup in 15 mins</option>
+          <option value="Pickup during 1:15 PM Lunch Break">Pickup during 1:15 PM Lunch Break</option>
+          <option value="Pickup after 4:00 PM Lecture">Pickup after 4:00 PM Lecture</option>
+        </select>
+      </div>
+
+      <div class="option-group" style="margin-bottom: 16px;">
+        <label class="option-label" for="checkout-notes-input">Special Instructions (Optional)</label>
+        <input type="text" id="checkout-notes-input" class="form-control" placeholder="e.g. Extra spicy, no onions, separate packing" />
+      </div>
+
+      <div style="background: rgba(255,255,255,0.03); border: var(--glass-border-subtle); border-radius: var(--radius-md); padding: 12px; margin-bottom: 18px;">
+        <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 4px;">
+          <span>Order Total:</span>
+          <strong id="checkout-grand-total" style="font-family: var(--font-mono); color: var(--text-primary);">₹0.00</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 0.78rem; color: var(--text-secondary);">
+          <span>Deduction Channel:</span>
+          <span style="color: var(--accent-emerald);">Digital Campus Wallet</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 0.78rem; color: var(--text-muted); margin-top: 2px;">
+          <span>Current Balance:</span>
+          <span id="checkout-wallet-bal">₹0.00</span>
+        </div>
+      </div>
+
+      <button id="btn-confirm-checkout" class="btn btn-primary" style="width: 100%;" onclick="StudentApp.executeCheckout()">
+        Pay from Campus Wallet & Place Order →
+      </button>
+    </div>
+  </div>
+
+  <!-- MODAL 3: POS PRINTED RECEIPT SLIP -->
+  <div id="pos-receipt-modal" class="modal-backdrop">
+    <div class="modal-card" style="max-width: 440px;">
+      <button class="modal-close">×</button>
+
+      <div class="receipt-slip">
+        <div class="receipt-header">
+          <div class="receipt-title">CENTRAL CAMPUS CAFETERIA</div>
+          <div style="font-size: 0.72rem; color: #64748b; margin-top: 2px;">University Food Court, Block C</div>
+          <div style="font-size: 0.72rem; color: #64748b;">Merchant Terminal: POS-TERM-CANTEEN-01</div>
+        </div>
+
+        <div class="receipt-cryptogram" id="receipt-cryptogram-code">
+          AUTH-89A1-F4E2-8819
+        </div>
+
+        <div class="receipt-row">
+          <span>Date & Time:</span>
+          <span id="receipt-timestamp">12:35 PM</span>
+        </div>
+        <div class="receipt-row">
+          <span>Student:</span>
+          <strong id="receipt-student-name">Aarav Sharma</strong>
+        </div>
+        <div class="receipt-row">
+          <span>Roll Number:</span>
+          <span id="receipt-student-roll">2024CS1042</span>
+        </div>
+        <div class="receipt-row">
+          <span>Verification:</span>
+          <span id="receipt-verify-method" style="color: #0284c7;">CRYPTOGRAPHIC_HMAC_SHA256</span>
+        </div>
+
+        <div style="border-top: 1px dashed #cbd5e1; margin: 10px 0;"></div>
+
+        <div class="receipt-row">
+          <span>Purchased Items:</span>
+          <span id="receipt-items-summary">Masala Dosa x1</span>
+        </div>
+        <div class="receipt-row" style="font-size: 1rem; font-weight: 800; border-top: 1px solid #e2e8f0; padding-top: 6px; margin-top: 6px;">
+          <span>TOTAL CHARGED:</span>
+          <span id="receipt-total-amount">₹55.00</span>
+        </div>
+        <div class="receipt-row" style="font-size: 0.75rem; color: #16a34a;">
+          <span>Remaining Wallet Balance:</span>
+          <span id="receipt-student-rem-bal">₹595.00</span>
+        </div>
+
+        <div style="text-align: center; font-size: 0.68rem; color: #94a3b8; margin-top: 14px; border-top: 1px dashed #cbd5e1; padding-top: 8px;">
+          Zero student cellular data consumed at counter.<br />
+          Digitally authenticated by Campus Central Ledger.
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 10px; margin-top: 16px;">
+        <button class="btn btn-outline" style="flex: 1;" onclick="window.print()">🖨️ Print Slip</button>
+        <button class="btn btn-primary" style="flex: 1;" onclick="document.getElementById('pos-receipt-modal').classList.remove('active')">Done / Next Sale</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FLOATING PRESENTER SHOWCASE DOCK -->
+  <aside id="presenter-dock" class="presenter-dock" aria-label="Presentation Toolbar">
+    <div id="presenter-badge-toggle" class="presenter-badge" title="Click to minimize/expand presenter controls">
+      <span>🎙️ Presenter Mode</span>
+    </div>
+
+    <div class="presenter-expand-content">
+      <!-- Quick 1-Click Jump -->
+      <div class="presenter-group">
+        <span class="presenter-group-label">Portals:</span>
+        <button class="presenter-pill-btn presenter-role-btn active" data-role="student" title="Jump to Student & Parent Portal">🎓 Student</button>
+        <button class="presenter-pill-btn presenter-role-btn" data-role="pos" title="Jump to Merchant POS Terminal">🛒 POS</button>
+        <button class="presenter-pill-btn presenter-role-btn" data-role="kitchen" title="Jump to Kitchen KDS Kanban">🍳 KDS</button>
+        <button class="presenter-pill-btn presenter-role-btn" data-role="admin" title="Jump to Admin Dashboard & Ledgers">📊 Admin</button>
+        <button class="presenter-pill-btn presenter-role-btn" data-role="split" title="Jump to Multi-Actor Simulation Studio">⚡ Studio</button>
+      </div>
+
+      <!-- Guided 1-Click Scenarios -->
+      <div class="presenter-group">
+        <span class="presenter-group-label">Scenarios:</span>
+        <button id="presenter-sim-tap" class="presenter-pill-btn presenter-scenario-btn" title="Run 1-Click Zero-Data NFC Tap Payment Walkthrough">📱 1. Tap & Pay</button>
+        <button id="presenter-sim-preorder" class="presenter-pill-btn presenter-scenario-btn" title="Run 1-Click Food Pre-Order to Live Kitchen KDS with Chime">🍱 2. Pre-Order ➔ KDS</button>
+        <button id="presenter-sim-offline" class="presenter-pill-btn presenter-scenario-btn" title="Simulate Cafeteria Wi-Fi blackout, edge queuing, and batch sync">📶 3. Offline Sync</button>
+        <button id="presenter-sim-freeze" class="presenter-pill-btn presenter-scenario-btn" title="Demonstrate Administrative Card Freeze and POS rejection">🔒 4. Freeze Lock</button>
+      </div>
+
+      <!-- Utility Actions -->
+      <div class="presenter-group">
+        <button id="presenter-btn-slides" class="presenter-pill-btn" style="background: rgba(99, 102, 241, 0.15); color: var(--accent-primary); border-color: rgba(99, 102, 241, 0.3);" title="Open Presentation Pitch Deck">📽️ Slides</button>
+        <button id="presenter-btn-reset" class="presenter-pill-btn" style="background: rgba(244, 63, 94, 0.12); color: var(--accent-rose); border-color: rgba(244, 63, 94, 0.3);" title="Reset Demo Data to Initial State">🔄 Reset</button>
+      </div>
+    </div>
+
+    <button id="presenter-btn-toggle" class="presenter-toggle-btn" title="Toggle Presenter Toolbar">🔽</button>
+  </aside>
+
+  <!-- PRESENTATION SLIDE DECK MODAL -->
+  <div id="presentation-slides-modal" class="presentation-modal-backdrop" aria-modal="true" role="dialog">
+    <div class="presentation-slide-card">
+      <div class="slide-header">
+        <div class="slide-brand">
+          <span style="font-size: 1.3rem;">🎓</span>
+          <div>
+            <div style="font-weight: 800; font-size: 0.95rem; color: var(--text-primary);">CampusPay Ecosystem</div>
+            <div style="font-size: 0.72rem; color: var(--text-muted);">Smart Campus Micro-Payments Presentation</div>
+          </div>
+        </div>
+        <div class="slide-progress-dots">
+          <div class="slide-dot active" data-index="0"></div>
+          <div class="slide-dot" data-index="1"></div>
+          <div class="slide-dot" data-index="2"></div>
+          <div class="slide-dot" data-index="3"></div>
+          <div class="slide-dot" data-index="4"></div>
+        </div>
+        <button id="slide-btn-close" class="modal-close" style="position: static; transform: none;">×</button>
+      </div>
+
+      <div class="slide-body">
+        <!-- Slide 1: Problem -->
+        <div class="slide-content-pane active" data-slide="0">
+          <div class="slide-kicker">Slide 1 • The Campus Challenge</div>
+          <h2 class="slide-title">Why Traditional Payments Fail on University Campuses</h2>
+          <p class="slide-subtitle">Thousands of students rush to canteens and print shops between 10-minute lecture breaks, causing systemic bottlenecks.</p>
+          <div class="slide-features-grid">
+            <div class="slide-feature-card">
+              <h4>📶 Cellular Deadzones</h4>
+              <p>Basement cafeterias and crowded campus Wi-Fi lead to 45+ second UPI transaction timeouts and failed OTPs.</p>
+            </div>
+            <div class="slide-feature-card">
+              <h4>⏳ 15-Minute Queue Delays</h4>
+              <p>Students spend their entire break waiting in line to order food or wait for stationery printouts.</p>
+            </div>
+            <div class="slide-feature-card">
+              <h4>👁️ Zero Parental / Budget Visibility</h4>
+              <p>Cash or unmonitored UPI leads to overspending without daily allowance limits or academic subsidy support.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 2: Hybrid Architecture -->
+        <div class="slide-content-pane" data-slide="1">
+          <div class="slide-kicker">Slide 2 • Technical Architecture</div>
+          <h2 class="slide-title">Hybrid Online-Offline Micro-Payments</h2>
+          <p class="slide-subtitle">A robust fault-tolerant design where transactions succeed in sub-200ms even when student phones have zero internet access.</p>
+          <div class="slide-features-grid">
+            <div class="slide-feature-card">
+              <h4>📡 Zero-Student-Data Checkout</h4>
+              <p>Dynamic HMAC-SHA256 tokens generated locally on the student ID card. No 4G/5G or cellular data needed at the counter.</p>
+            </div>
+            <div class="slide-feature-card">
+              <h4>⚡ Edge POS Queue Buffer</h4>
+              <p>If campus Wi-Fi drops, Merchant POS buffers encrypted transactions locally and batch reconciles when online.</p>
+            </div>
+            <div class="slide-feature-card">
+              <h4>🏛️ Central Real-time Ledger</h4>
+              <p>Instantaneous balance deductions and automated financial reconciliation with college treasury.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 3: Innovations -->
+        <div class="slide-content-pane" data-slide="2">
+          <div class="slide-kicker">Slide 3 • Key Innovations</div>
+          <h2 class="slide-title">Full Lifecycle Campus Commerce Ecosystem</h2>
+          <p class="slide-subtitle">Connecting Students, Parents, Canteen Chefs, Stationery Operators, and University Administrators.</p>
+          <div class="slide-features-grid">
+            <div class="slide-feature-card">
+              <h4>💳 3D Virtual Smart ID Card</h4>
+              <p>Interactive 3D card with rotating cryptographic barcode, RFID/NFC emulation, and parent budget controls.</p>
+            </div>
+            <div class="slide-feature-card">
+              <h4>🍱 Swiggy/Zepto Pre-Orders</h4>
+              <p>Students pre-order lunch or laser printouts from the lecture hall with scheduled pickup and 4-digit security OTP.</p>
+            </div>
+            <div class="slide-feature-card">
+              <h4>🍳 Real-Time Kitchen KDS</h4>
+              <p>3-column Kanban order pipeline with second-by-second preparation timers and acoustic kitchen arrival chime.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 4: Cryptography & Security -->
+        <div class="slide-content-pane" data-slide="3">
+          <div class="slide-kicker">Slide 4 • Security & Governance</div>
+          <h2 class="slide-title">Military-Grade Security & Anti-Fraud</h2>
+          <p class="slide-subtitle">Engineered to prevent screenshot replay attacks, counterfeit barcodes, and unauthorized spending.</p>
+          <div class="slide-features-grid">
+            <div class="slide-feature-card">
+              <h4>⏱️ 30-Second Rolling HMAC Tokens</h4>
+              <p>Barcodes rotate every 30 seconds. Screenshots and camera photos expire automatically, preventing theft.</p>
+            </div>
+            <div class="slide-feature-card">
+              <h4>🔒 Instant 1-Click Card Freeze</h4>
+              <p>Lost ID cards can be locked in real time by students or administrators, instantly rejecting all POS taps.</p>
+            </div>
+            <div class="slide-feature-card">
+              <h4>📋 Immutable Audit Trail</h4>
+              <p>Every wallet deduction, subsidy grant, and KDS handover is logged with IP address, terminal ID, and cryptographic cryptogram.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 5: Live Demo -->
+        <div class="slide-content-pane" data-slide="4">
+          <div class="slide-kicker">Slide 5 • Interactive Showcase</div>
+          <h2 class="slide-title">Experience the Live Simulation</h2>
+          <p class="slide-subtitle">Ready to see the entire ecosystem in action? Explore the portals or run 1-click automated demonstrations below.</p>
+          <div class="slide-features-grid">
+            <div class="slide-feature-card" style="cursor: pointer;" onclick="window.PresenterEngine.closeSlides(); window.PresenterEngine.runScenarioTapPayment();">
+              <h4>📱 Demo 1: Contactless Tap</h4>
+              <p>Watch student card tap on merchant POS with instant 180ms deduction and thermal receipt generation.</p>
+            </div>
+            <div class="slide-feature-card" style="cursor: pointer;" onclick="window.PresenterEngine.closeSlides(); window.PresenterEngine.runScenarioPreOrder();">
+              <h4>🍱 Demo 2: Canteen Pre-Order</h4>
+              <p>Student pre-orders food, ticket arrives in Kitchen KDS with acoustic bell, and OTP handover verified.</p>
+            </div>
+            <div class="slide-feature-card" style="cursor: pointer;" onclick="window.PresenterEngine.closeSlides(); window.PresenterEngine.switchPortal('split');">
+              <h4>⚡ Demo 3: Multi-Actor Studio</h4>
+              <p>View student phone, merchant POS, and kitchen KDS simultaneously interacting on one screen.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <div id="slide-counter-text" class="slide-counter">Slide 1 of 5</div>
+        <div class="slide-nav-btns">
+          <button id="slide-btn-prev" class="btn btn-outline" style="padding: 8px 16px;">← Previous</button>
+          <button id="slide-btn-next" class="btn btn-primary" style="padding: 8px 20px;">Next →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Client-Side Scripts -->
+  <script src="public/js/audio.js"></script>
+  <script src="public/js/localData.js"></script>
+  <script src="public/js/localStore.js"></script>
+  <script src="public/js/ws.js"></script>
+  <script src="public/js/api.js"></script>
+  <script src="public/js/student.js"></script>
+  <script src="public/js/pos.js"></script>
+  <script src="public/js/kitchen.js"></script>
+  <script src="public/js/admin.js"></script>
+  <script src="public/js/split.js"></script>
+  <script src="public/js/presenter.js"></script>
+  <script src="public/js/app.js"></script>
+
+  <!-- Live Clock Script for KDS -->
+  <script>
+    setInterval(() => {
+      const clockEl = document.getElementById('kds-clock');
+      if (clockEl) clockEl.textContent = new Date().toLocaleTimeString();
+    }, 1000);
+  </script>
+</body>
+</html>
