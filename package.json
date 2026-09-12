@@ -1,0 +1,26 @@
+{
+  "name": "smart-campus-payments-ecosystem",
+  "version": "1.0.0",
+  "description": "Smart Campus Micro-Payments and Ordering Ecosystem with hybrid online-offline architecture",
+  "main": "server/server.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "test": "node test/api-test.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {},
+  "keywords": [
+    "campus-payments",
+    "nfc-micropayment",
+    "kds",
+    "pos",
+    "upi",
+    "offline-first"
+  ],
+  "author": "Antigravity",
+  "license": "MIT"
+}

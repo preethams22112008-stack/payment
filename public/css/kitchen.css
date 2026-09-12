@@ -1,0 +1,232 @@
+/* Kitchen Display System (KDS) Styles */
+
+.kds-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 16px 24px;
+  margin-bottom: 24px;
+}
+
+.kds-title-group {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.kds-live-clock {
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--accent-cyan);
+  background: rgba(14, 165, 233, 0.1);
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(14, 165, 233, 0.2);
+}
+
+.kds-kanban-board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+
+@media (max-width: 1024px) {
+  .kds-kanban-board {
+    grid-template-columns: 1fr;
+  }
+}
+
+.kds-column {
+  background: rgba(17, 24, 39, 0.6);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  min-height: 550px;
+  display: flex;
+  flex-direction: column;
+}
+
+.kds-col-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 14px;
+  margin-bottom: 16px;
+  border-bottom: 2px solid var(--border-subtle);
+}
+
+.kds-col-title {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.kds-col-count {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+}
+
+.kds-tickets-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+}
+
+/* Individual Kitchen Ticket */
+.kitchen-ticket {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-fast);
+  position: relative;
+  overflow: hidden;
+}
+
+.kitchen-ticket:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.kitchen-ticket::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--accent-cyan);
+}
+
+.kitchen-ticket.timer-warn::before { background: var(--accent-amber); }
+.kitchen-ticket.timer-urgent::before {
+  background: var(--accent-rose);
+  animation: urgentGlow 1.5s infinite;
+}
+
+@keyframes urgentGlow {
+  0% { box-shadow: 0 0 0 rgba(239, 68, 68, 0.7); }
+  50% { box-shadow: 0 0 15px rgba(239, 68, 68, 1); }
+  100% { box-shadow: 0 0 0 rgba(239, 68, 68, 0.7); }
+}
+
+.ticket-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.ticket-order-id {
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.ticket-timer-pill {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  background: rgba(16, 185, 129, 0.15);
+  color: var(--accent-emerald);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.ticket-timer-pill.timer-warn {
+  background: rgba(245, 158, 11, 0.15);
+  color: var(--accent-amber);
+  border-color: rgba(245, 158, 11, 0.3);
+}
+
+.ticket-timer-pill.timer-urgent {
+  background: rgba(239, 68, 68, 0.2);
+  color: var(--accent-rose);
+  border-color: rgba(239, 68, 68, 0.5);
+  animation: pulseBeacon 1s infinite;
+}
+
+.ticket-student-meta {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  border-bottom: 1px dashed var(--border-subtle);
+  padding-bottom: 10px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ticket-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.ticket-item-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.88rem;
+  cursor: pointer;
+}
+
+.ticket-item-row input[type="checkbox"] {
+  accent-color: var(--accent-emerald);
+  width: 16px;
+  height: 16px;
+  margin-top: 2px;
+}
+
+.ticket-item-row.checked span {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+
+.ticket-qty-badge {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: var(--accent-orange);
+  min-width: 24px;
+}
+
+.ticket-notes {
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  border-radius: var(--radius-sm);
+  padding: 6px 10px;
+  font-size: 0.75rem;
+  color: var(--accent-amber);
+  margin-bottom: 14px;
+}
+
+.ticket-actions-bar {
+  display: flex;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.ticket-btn {
+  flex: 1;
+  font-size: 0.82rem;
+  padding: 8px;
+}

@@ -1,0 +1,285 @@
+/* Apple Liquid Glass Material & Lighting Styles */
+
+/* Ambient Liquid Chromatic Background */
+.liquid-canvas-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+  background-color: var(--bg-canvas);
+  background-image: var(--bg-gradient-mesh);
+  transition: var(--transition-theme);
+}
+
+.liquid-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.55;
+  animation: floatOrb 18s ease-in-out infinite alternate;
+}
+
+body.theme-light .liquid-orb {
+  opacity: 0.45;
+  filter: blur(90px);
+}
+
+.liquid-orb-1 {
+  width: 520px;
+  height: 520px;
+  background: radial-gradient(circle, rgba(14, 165, 233, 0.4), rgba(56, 189, 248, 0.05));
+  top: -120px;
+  left: -100px;
+  animation-duration: 22s;
+}
+
+.liquid-orb-2 {
+  width: 580px;
+  height: 580px;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.35), rgba(168, 85, 247, 0.05));
+  top: 30%;
+  right: -150px;
+  animation-duration: 26s;
+  animation-delay: -5s;
+}
+
+.liquid-orb-3 {
+  width: 480px;
+  height: 480px;
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.3), rgba(52, 211, 153, 0.05));
+  bottom: -100px;
+  left: 25%;
+  animation-duration: 20s;
+  animation-delay: -10s;
+}
+
+@keyframes floatOrb {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(60px, 40px) scale(1.08); }
+  100% { transform: translate(-40px, 70px) scale(0.94); }
+}
+
+/* Glass Surface Elements */
+.glass-panel,
+.wallet-card,
+.modal-card,
+.bill-ticket-panel,
+.kds-column,
+.kds-header-bar,
+.pos-counter-bar,
+.split-pane,
+.split-studio-header,
+.chart-card,
+.admin-table-panel,
+.kpi-card {
+  background: var(--glass-card) !important;
+  backdrop-filter: var(--glass-blur) !important;
+  -webkit-backdrop-filter: var(--glass-blur) !important;
+  border: var(--glass-border) !important;
+  box-shadow: var(--glass-shadow), var(--glass-highlight) !important;
+  border-radius: var(--radius-lg);
+  position: relative;
+  z-index: 1;
+  transition: var(--transition-theme), transform var(--transition-fast), box-shadow var(--transition-fast) !important;
+}
+
+.glass-panel:hover,
+.kpi-card:hover,
+.food-card:hover {
+  border-color: rgba(255, 255, 255, 0.35) !important;
+  box-shadow: var(--glass-shadow-lg), var(--glass-highlight) !important;
+}
+
+body.theme-light .glass-panel:hover,
+body.theme-light .kpi-card:hover {
+  border-color: rgba(255, 255, 255, 1) !important;
+}
+
+/* Apple Squircle Header */
+.app-header {
+  background: var(--glass-base) !important;
+  backdrop-filter: var(--glass-blur-heavy) !important;
+  -webkit-backdrop-filter: var(--glass-blur-heavy) !important;
+  border-bottom: var(--glass-border) !important;
+  box-shadow: var(--glass-highlight);
+  transition: var(--transition-theme);
+}
+
+/* Apple Liquid Buttons */
+.btn {
+  border-radius: var(--radius-full) !important;
+  font-family: var(--font-heading) !important;
+  letter-spacing: -0.01em;
+  backdrop-filter: var(--glass-blur-sm);
+  -webkit-backdrop-filter: var(--glass-blur-sm);
+  box-shadow: var(--glass-highlight);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+  transform: skewX(-20deg);
+  transition: 0.6s;
+  pointer-events: none;
+}
+
+.btn:hover::after {
+  left: 150%;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #0ea5e9, #0284c7) !important;
+  box-shadow: 0 4px 16px rgba(14, 165, 233, 0.4), var(--glass-highlight) !important;
+}
+
+.btn-success {
+  background: linear-gradient(135deg, #10b981, #059669) !important;
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.4), var(--glass-highlight) !important;
+}
+
+.btn-outline {
+  background: var(--glass-base) !important;
+  border: var(--glass-border) !important;
+  color: var(--text-primary) !important;
+}
+.btn-outline:hover {
+  background: var(--glass-base-hover) !important;
+  border-color: rgba(255, 255, 255, 0.4) !important;
+}
+
+/* Glass Inputs */
+.form-control,
+.table-search-input {
+  background: var(--glass-input) !important;
+  backdrop-filter: var(--glass-blur-sm) !important;
+  -webkit-backdrop-filter: var(--glass-blur-sm) !important;
+  border: var(--glass-border) !important;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2) !important;
+  color: var(--text-primary) !important;
+  border-radius: var(--radius-md) !important;
+  transition: all var(--transition-fast);
+}
+
+.form-control:focus,
+.table-search-input:focus {
+  border-color: var(--accent-cyan) !important;
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.25), inset 0 1px 2px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Theme Toggle Button (Apple Dynamic Pill) */
+.theme-toggle-btn {
+  background: var(--glass-base);
+  border: var(--glass-border);
+  box-shadow: var(--glass-highlight);
+  backdrop-filter: var(--glass-blur-sm);
+  -webkit-backdrop-filter: var(--glass-blur-sm);
+  color: var(--text-primary);
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.theme-toggle-btn:hover {
+  transform: scale(1.08) rotate(15deg);
+  background: var(--glass-base-hover);
+}
+
+/* User Profile & Domain Indicator in Header */
+.user-profile-chip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--glass-base);
+  border: var(--glass-border);
+  box-shadow: var(--glass-highlight);
+  backdrop-filter: var(--glass-blur-sm);
+  -webkit-backdrop-filter: var(--glass-blur-sm);
+  padding: 4px 12px 4px 6px;
+  border-radius: var(--radius-full);
+}
+
+.user-avatar-small {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid var(--accent-cyan);
+}
+
+.user-meta-name {
+  font-family: var(--font-heading);
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.1;
+}
+
+.domain-pill {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: var(--radius-full);
+  letter-spacing: 0.04em;
+}
+
+.domain-pill.std {
+  background: rgba(14, 165, 233, 0.18);
+  color: #38bdf8;
+  border: 1px solid rgba(14, 165, 233, 0.4);
+}
+
+.domain-pill.shop {
+  background: rgba(249, 115, 22, 0.18);
+  color: #fb923c;
+  border: 1px solid rgba(249, 115, 22, 0.4);
+}
+
+.domain-pill.admin {
+  background: rgba(139, 92, 246, 0.18);
+  color: #c084fc;
+  border: 1px solid rgba(139, 92, 246, 0.4);
+}
+
+.btn-logout {
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #f87171;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn-logout:hover {
+  background: #ef4444;
+  color: #ffffff;
+}
+
+/* Restricted Domain Banner */
+.domain-restricted-banner {
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  backdrop-filter: var(--glass-blur);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  text-align: center;
+  margin: 40px auto;
+  max-width: 600px;
+}

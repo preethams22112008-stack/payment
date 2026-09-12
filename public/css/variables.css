@@ -1,0 +1,106 @@
+/* Apple Liquid Glass Design System Tokens (Dark & Light) */
+
+:root {
+  /* Default Dark Liquid Glass Theme (Pure Black Canvas) */
+  --bg-canvas: #000000;
+  --bg-primary: #000000;
+  --bg-secondary: #050508;
+  --bg-card: rgba(8, 10, 16, 0.75);
+  --bg-gradient-mesh: radial-gradient(at 10% 10%, rgba(14, 165, 233, 0.15) 0px, transparent 45%),
+                      radial-gradient(at 90% 15%, rgba(139, 92, 246, 0.16) 0px, transparent 50%),
+                      radial-gradient(at 50% 90%, rgba(16, 185, 129, 0.1) 0px, transparent 45%),
+                      radial-gradient(at 80% 80%, rgba(249, 115, 22, 0.1) 0px, transparent 45%);
+
+  --glass-base: rgba(12, 14, 20, 0.65);
+  --glass-base-hover: rgba(22, 26, 38, 0.8);
+  --glass-card: rgba(8, 10, 16, 0.75);
+  --glass-panel: rgba(10, 12, 20, 0.82);
+  --glass-input: rgba(255, 255, 255, 0.05);
+
+  --glass-blur: blur(28px) saturate(190%);
+  --glass-blur-sm: blur(16px) saturate(160%);
+  --glass-blur-heavy: blur(40px) saturate(220%);
+
+  /* Specular Edge Highlights (Apple Vision Prism Reflection) */
+  --glass-border: 1px solid rgba(255, 255, 255, 0.14);
+  --glass-border-light: 1px solid rgba(255, 255, 255, 0.22);
+  --glass-border-subtle: 1px solid rgba(255, 255, 255, 0.08);
+  --glass-highlight: inset 0 1px 1px 0 rgba(255, 255, 255, 0.25),
+                     inset 0 -1px 1px 0 rgba(0, 0, 0, 0.4);
+
+  --glass-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.6),
+                  0 0 1px 1px rgba(255, 255, 255, 0.08);
+  --glass-shadow-lg: 0 24px 55px -12px rgba(0, 0, 0, 0.75),
+                     0 0 2px 1px rgba(255, 255, 255, 0.12);
+
+  /* Typography Colors */
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --text-dim: #475569;
+  --text-inverse: #090d16;
+
+  /* Accents */
+  --accent-cyan: #0ea5e9;
+  --accent-cyan-glow: rgba(14, 165, 233, 0.35);
+  --accent-emerald: #10b981;
+  --accent-emerald-glow: rgba(16, 185, 129, 0.35);
+  --accent-orange: #f97316;
+  --accent-orange-glow: rgba(249, 115, 22, 0.35);
+  --accent-amber: #f59e0b;
+  --accent-rose: #ef4444;
+  --accent-purple: #8b5cf6;
+  --accent-purple-glow: rgba(139, 92, 246, 0.35);
+
+  /* Apple Squircle Geometry */
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 22px;
+  --radius-xl: 30px;
+  --radius-full: 9999px;
+
+  /* Fonts */
+  --font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', monospace;
+
+  /* Transitions */
+  --transition-fast: 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-smooth: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-theme: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease;
+}
+
+/* Apple Light Liquid Glass Theme */
+body.theme-light {
+  --bg-canvas: #f1f5f9;
+  --bg-primary: #f1f5f9;
+  --bg-secondary: #ffffff;
+  --bg-card: rgba(255, 255, 255, 0.75);
+  --bg-gradient-mesh: radial-gradient(at 10% 10%, rgba(14, 165, 233, 0.14) 0px, transparent 55%),
+                      radial-gradient(at 90% 15%, rgba(139, 92, 246, 0.15) 0px, transparent 60%),
+                      radial-gradient(at 50% 90%, rgba(16, 185, 129, 0.1) 0px, transparent 50%),
+                      radial-gradient(at 80% 80%, rgba(249, 115, 22, 0.08) 0px, transparent 50%);
+
+  --glass-base: rgba(255, 255, 255, 0.65);
+  --glass-base-hover: rgba(255, 255, 255, 0.85);
+  --glass-card: rgba(255, 255, 255, 0.72);
+  --glass-panel: rgba(255, 255, 255, 0.8);
+  --glass-input: rgba(255, 255, 255, 0.7);
+
+  --glass-border: 1px solid rgba(255, 255, 255, 0.8);
+  --glass-border-light: 1px solid rgba(255, 255, 255, 0.95);
+  --glass-border-subtle: 1px solid rgba(203, 213, 225, 0.6);
+  --glass-highlight: inset 0 1px 1px 0 rgba(255, 255, 255, 0.9),
+                     inset 0 -1px 1px 0 rgba(0, 0, 0, 0.04);
+
+  --glass-shadow: 0 14px 32px -8px rgba(100, 116, 139, 0.18),
+                  0 0 1px 1px rgba(255, 255, 255, 0.9);
+  --glass-shadow-lg: 0 24px 50px -10px rgba(100, 116, 139, 0.25),
+                     0 0 2px 1px rgba(255, 255, 255, 1);
+
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --text-dim: #94a3b8;
+  --text-inverse: #ffffff;
+}
